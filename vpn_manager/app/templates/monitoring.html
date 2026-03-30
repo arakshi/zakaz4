@@ -1,0 +1,30 @@
+{% extends 'base.html' %}{% block content %}
+<h3>Мониторинг</h3>
+<div class="row mb-3">
+  <div class="col-6"><canvas id="statusChart"></canvas></div>
+  <div class="col-6"><canvas id="latencyChart"></canvas></div>
+</div>
+<table class="table table-dark table-striped"><tr><th>Peer</th><th>Endpoint</th><th>Handshake</th><th>RX</th><th>TX</th><th>Status</th><th>Ping</th><th>Проверка</th></tr>
+{% for s in snaps %}<tr><td>{{ s.peer_name }}</td><td>{{ s.endpoint }}</td><td>{{ s.latest_handshake }}</td><td>{{ s.received_bytes }}</td><td>{{ s.sent_bytes }}</td><td>{{ s.status }}</td><td>{{ s.ping_latency_ms }}</td><td>{{ s.checked_at }}</td></tr>{% endfor %}
+</table>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+new Chart(document.getElementById('statusChart'), {
+  type: 'bar',
+  data: {
+    labels: {{ stats.labels|tojson }},
+    datasets: [
+      {label: 'Online', data: {{ stats.online|tojson }}, backgroundColor: '#00d084'},
+      {label: 'Offline', data: {{ stats.offline|tojson }}, backgroundColor: '#ff4d4f'}
+    ]
+  }
+});
+new Chart(document.getElementById('latencyChart'), {
+  type: 'line',
+  data: {
+    labels: {{ stats.labels|tojson }},
+    datasets: [{label: 'Средняя задержка (ms)', data: {{ stats.avg_latency|tojson }}, borderColor: '#4dabf7'}]
+  }
+});
+</script>
+{% endblock %}
