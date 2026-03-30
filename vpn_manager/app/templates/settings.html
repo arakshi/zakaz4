@@ -1,0 +1,8 @@
+{% extends 'base.html' %}{% block content %}
+<h3>Настройки</h3>
+<ul>
+  <li>Текущий режим: {{ mode }}</li>
+  <li>Количество серверов: {{ server_count }}</li>
+  <li>Для смены режима установите APP_MODE=demo|real|auto в .env</li>
+</ul>
+{% endblock %}
