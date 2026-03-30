@@ -1,0 +1,19 @@
+{% extends 'base.html' %}{% block content %}
+<h3>Топология</h3>
+<div class="row">
+<div class="col-6"><h5>Подсети</h5>
+<form method="post" action="/topology/subnet">
+<input class="form-control my-1" name="name" placeholder="Название" required>
+<input class="form-control my-1" name="cidr" placeholder="CIDR" required>
+<input class="form-control my-1" name="node_name" placeholder="Узел" required>
+<button class="btn btn-success">Добавить подсеть</button></form>
+<ul>{% for s in subnets %}<li>{{ s.name }} - {{ s.cidr }} ({{ s.node_name }})</li>{% endfor %}</ul></div>
+<div class="col-6"><h5>Связи</h5>
+<form method="post" action="/topology/link">
+<input class="form-control my-1" name="source_node" placeholder="source" required>
+<input class="form-control my-1" name="target_node" placeholder="target" required>
+<input class="form-control my-1" name="link_type" value="site-to-site">
+<button class="btn btn-success">Добавить связь</button></form>
+<ul>{% for l in links %}<li>{{ l.source_node }} -> {{ l.target_node }} ({{ l.link_type }})</li>{% endfor %}</ul></div>
+</div>
+{% endblock %}

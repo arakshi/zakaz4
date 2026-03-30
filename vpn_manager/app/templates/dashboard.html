@@ -1,0 +1,37 @@
+{% extends 'base.html' %}{% block content %}
+<h3>Dashboard (режим: {{ mode }})</h3>
+<div class="row g-3 my-2">
+  <div class="col"><div class="card p-3">VPN-узлы: {{ servers|length }}</div></div>
+  <div class="col"><div class="card p-3">Клиенты: {{ clients|length }}</div></div>
+  <div class="col"><div class="card p-3">Активные: {{ active }}</div></div>
+  <div class="col"><div class="card p-3">CPU: {{ stats.cpu_percent }}%</div></div>
+  <div class="col"><div class="card p-3">RAM: {{ stats.memory_percent }}%</div></div>
+</div>
+<div class="row">
+  <div class="col-8"><canvas id="stateChart"></canvas></div>
+  <div class="col-4">
+    <div class="card p-3">Снимков за 12ч: {{ stats.snapshot_count }}</div>
+    <div class="card p-3 mt-2">RX всего: {{ stats.total_rx }}</div>
+    <div class="card p-3 mt-2">TX всего: {{ stats.total_tx }}</div>
+  </div>
+</div>
+<h5 class="mt-4">Последние события</h5>
+<ul>{% for log in logs %}<li>{{ log.created_at }} - {{ log.action }} - {{ log.details }}</li>{% endfor %}</ul>
+<h5>Состояние серверов/клиентов</h5>
+<table class="table table-dark table-striped"><tr><th>Peer</th><th>Status</th><th>Handshake</th><th>RX</th><th>TX</th></tr>
+{% for s in snaps %}<tr><td>{{ s.peer_name }}</td><td>{{ s.status }}</td><td>{{ s.latest_handshake }}</td><td>{{ s.received_bytes }}</td><td>{{ s.sent_bytes }}</td></tr>{% endfor %}
+</table>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+new Chart(document.getElementById('stateChart'), {
+  type: 'line',
+  data: {
+    labels: {{ stats.labels|tojson }},
+    datasets: [
+      {label: 'Online', data: {{ stats.online|tojson }}, borderColor: '#00d084'},
+      {label: 'Offline', data: {{ stats.offline|tojson }}, borderColor: '#ff4d4f'}
+    ]
+  }
+});
+</script>
+{% endblock %}

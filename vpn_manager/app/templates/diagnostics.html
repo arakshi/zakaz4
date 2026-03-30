@@ -1,0 +1,6 @@
+{% extends 'base.html' %}{% block content %}
+<h3>Диагностика</h3>
+<table class="table table-dark"><tr><th>Проверка</th><th>Статус</th><th>Детали</th></tr>
+{% for r in results %}<tr><td>{{ r.name }}</td><td>{{ r.status }}</td><td>{{ r.details }}</td></tr>{% endfor %}
+</table>
+{% endblock %}

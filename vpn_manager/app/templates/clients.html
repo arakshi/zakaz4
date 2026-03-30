@@ -1,0 +1,12 @@
+{% extends 'base.html' %}{% block content %}
+<h3>Клиенты</h3>
+<form method="post" action="/clients/create" class="row g-2">
+<select class="form-select" name="server_id">{% for s in servers %}<option value="{{ s.id }}">{{ s.name }}</option>{% endfor %}</select>
+<input class="form-control" name="name" placeholder="Имя клиента" required>
+<input class="form-control" name="allowed_ips" value="0.0.0.0/0">
+<button class="btn btn-success">Создать клиента</button>
+</form><hr>
+<table class="table table-dark"><tr><th>Name</th><th>IP</th><th>Server</th><th>Config</th></tr>
+{% for c in clients %}<tr><td>{{ c.name }}</td><td>{{ c.ip_address }}</td><td>{{ c.server.name }}</td><td><a href="/configs/client_{{ c.name }}.conf">скачать</a></td></tr>{% endfor %}
+</table>
+{% endblock %}
