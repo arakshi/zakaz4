@@ -1,0 +1,5 @@
+body { background-color: #0f1115; }
+.sidebar { min-height: 100vh; background: #171b22; }
+.sidebar a { display:block; color:#d8dee9; text-decoration:none; margin:.4rem 0; }
+.sidebar a:hover { color:#81a1c1; }
+.card { background:#1f2430; border:1px solid #2e3440; }
